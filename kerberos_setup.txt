@@ -1,0 +1,18 @@
+1. Install kerberos
+2. Configure kerberos configuration file
+- locate krb5.ini
+
+[libdefaults]
+    default_realm = KAFKA.COM
+    dns_lookup_realm = false
+    dns_lookup_kdc = true
+
+[realms]
+    KAFKA.COM = {
+        kdc = kerberos-server.kafka.com
+        admin_server = kerberos-server.kafka.com
+    }
+
+[domain_realm]
+    .kafka.com = KAFKA.COM
+    kafka.com = KAFKA.COM
