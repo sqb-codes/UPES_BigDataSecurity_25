@@ -1,6 +1,7 @@
 1. Install kerberos
 2. Configure kerberos configuration file
-- locate krb5.ini
+- locate krb5.ini (C:\Program Files\MIT\Kerberos\)
+If not available then create under C:\windows
 
 [libdefaults]
     default_realm = KAFKA.COM
