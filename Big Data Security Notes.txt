@@ -1,0 +1,80 @@
+Big Data Security Notes
+
+
+Threat Categories
+- External Threat -> hacking, malware
+- Internal Threat -> accidental data exposure, privilege misuse
+- APTs -> Advanced Persisten Threats
+
+
+Threat and Risk Assessment
+Steps for Risk Assessment
+1. Identify Threat
+2. Analyze Vulnerabilities
+3. Evaluate Risks
+4. Mitigation Strategies
+
+Key Metrics
+1. Impact
+2. Likelihood
+
+Example for vulnerabilities
+CI/CD Pipeline
+- sonarqube, trivy
+
+
+How we will handle threats and vulnerabilities in Big Data ?
+
+1. Use Hadoop/Spark in pseduo-distributed mode on your local machine
+or use Docker image
+
+2. Use tools like OpenVAS or Nessus to scan vulnerabilities
+
+
+Some practical use-cases to test with Python
+Data Tampering - Integrity Check / Integrity Violation
+
+Problem
+data = "Transacation amount = 5000rs"
+tampered_data = data.replace("5000", "50000")
+
+Solution
+- Add hash-based integrity check
+
+
+Data Leakage
+
+
+SQL Injection
+user_id = "1 or 1=1"
+query = f"SELECT * FROM table_name WHERE user_id = {user_id}";
+
+
+
+Data Tampering / Integrity Violation - Hashless tampering
+Data Leakage / Misconfigured Access - Role-Based Access Control (RBAC)
+Insecure Data Transmission - Unencrypted data being intercepted
+DoS - Memory exhaustion with massive input
+SQL Injection - Dynamic query without sanitization
+
+
+For logging use these tools
+- Datadog 
+- Splunk
+- ELK Stack (Elasticsearch, Logstash, kibana)
+
+
+Perform Risk & Threat Assessment
+- Use tools like OpenVAS to scan Vulnerabilities
+- Create a risk assessment report
+  - Identify threats
+  - Rate their impact and likelihood
+  - Suggest mitigation
+
+
+Kerberos
+- Setup a MIT Kerberos server on linux
+
+Try integrating Kerberos with Hadoop
+- Enable Kerberos authentication for HDFS and YARN
+

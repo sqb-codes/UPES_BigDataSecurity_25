@@ -1,0 +1,6 @@
+2025-03-28 19:49:39,672 - DEBUG - Application Started...
+2025-03-28 19:49:39,673 - DEBUG - Roles initialized...
+2025-03-28 19:49:39,673 - WARNING - User : john tried to access data
+2025-03-28 19:49:39,673 - INFO - Data accessed successfully by john
+2025-03-28 19:49:39,673 - WARNING - User : sam tried to access data
+2025-03-28 19:49:39,673 - ERROR - Unauthorized user : sam tried to access data
