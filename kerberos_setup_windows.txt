@@ -1,7 +1,7 @@
 Install kerberos on Windows
 Download the installer from official website of MIT Kerberos
 Run the installer and follow the installation prompts.
-https://kerberos.org/dist/
+https://computing.help.inf.ed.ac.uk/kerberos-heimdal-windows
 
 Set Environment Variables
 
