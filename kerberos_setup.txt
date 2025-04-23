@@ -17,3 +17,86 @@ If not available then create under C:\windows
 [domain_realm]
     .kafka.com = KAFKA.COM
     kafka.com = KAFKA.COM
+
+
+
+2. Install Kerberos on Mac
+
+Install Kerberos using Homebrew:  
+brew install krb5
+brew search krb5  
+sudo nano /etc/krb5.conf  
+
+Paste this code inside file [libdefaults]
+  default_realm = HADOOP.COM
+  dns_lookup_realm = false
+  dns_lookup_kdc = true
+
+[realms]
+ HADOOP.COM = {
+    kdc = localhost
+    admin_server = localhost
+  }
+
+[domain_realm]
+  .hadoop.com = HADOOP.COM
+  hadoop.com = HADOOP.COM
+
+
+which kadmin.local
+sudo kadmin
+brew list krb5
+
+find /usr/local -name "krb5kdc"
+find /usr/local -name "kadmind"
+
+sudo mkdir -p /var/kerberos/krb5kdc/
+
+nano ~/.zshrc
+Add this path - export PATH="/usr/local/sbin:$PATH"
+
+source ~/.zshrc 
+which krb5kdc
+
+sudo chown -R $(whoami):staff /var/kerberos/krb5kdc/
+
+sudo kdb5_util create -r HADOOP.COM -s
+
+sudo krb5kdc
+sudo kadmind
+
+
+sudo nano /usr/local/var/krb5kdc/kadm5.acl
+
+Paste - */admin@HADOOP.COM     *
+
+sudo chown $(whoami):staff /usr/local/var/krb5kdc/kadm5.acl
+
+sudo chmod 640 /usr/local/var/krb5kdc/kadm5.acl
+sudo kadmind
+sudo kadmin.local
+
+kadmin.local:  addprinc root/admin@HADOOP.COM
+kadmin.local:  addprinc admin/admin@HADOOP.COM
+kadmin.local:  exit
+
+kadmin.local -p admin/admin@HADOOP.COM
+
+kadmin -p admin/admin@HADOOP.COM
+
+kadmin:  addprinc testuser@HADOOP.COM
+kadmin:  addprinc -randkey kafka/my-kafka-broker@HADOOP.COM
+
+kadmin:  ktadd -k /path/to/kafka.keytab kafka/my-kafka-broker@HADOOP.COM
+kadmin: Key table file '/path/to/kafka.keytab' not found while adding key to keytab
+kadmin:  ktadd -k /tmp/kafka.keytab kafka/my-kafka-broker@HADOOP.COM
+
+kadmin:  quit
+
+ktutil
+ktutil:  rkt /tmp/kafka.keytab
+ktutil:  list
+
+ktutil:  quit
+
+
