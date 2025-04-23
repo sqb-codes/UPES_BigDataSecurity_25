@@ -34,10 +34,6 @@ Open the krb5.ini file and modify it to look like this:
   hadoop.com = HADOOP.COM
 
 Install and Start the KDC (Key Distribution Center)
-a. Download and Install KDC for Windows
-You will need to set up a Kerberos KDC on your machine. 
-Download the KDC from the MIT Kerberos page and follow the instructions for Windows setup.
-
 Start KDC and Admin Server
 Once the KDC is installed and configured, you can start the Kerberos KDC and Admin Server from the Command Prompt.
 
