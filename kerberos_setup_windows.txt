@@ -1,0 +1,100 @@
+Install kerberos on Windows
+Download the installer from official website of MIT Kerberos
+Run the installer and follow the installation prompts.
+https://kerberos.org/dist/
+
+Set Environment Variables
+
+Variable name: KRB5_CONFIG
+Variable value: C:\Program Files\MIT\Kerberos\krb5.ini (or wherever MIT Kerberos is installed).
+
+You also need to add the Kerberos bin directory to your PATH.
+
+Variable name: PATH
+Variable value: C:\Program Files\MIT\Kerberos\bin
+
+Configure kerberos configuration file
+Kerberos on Windows uses the krb5.ini configuration file, similar to krb5.conf on UNIX-based systems. You’ll need to configure it to define your Kerberos realm and KDC (Key Distribution Center).
+Navigate to C:\Program Files\MIT\Kerberos\krb5.ini (or wherever it was installed).
+Open the krb5.ini file and modify it to look like this:
+
+[libdefaults]
+  default_realm = HADOOP.COM
+  dns_lookup_realm = false
+  dns_lookup_kdc = true
+
+[realms]
+ HADOOP.COM = {
+    kdc = localhost
+    admin_server = localhost
+  }
+
+[domain_realm]
+  .hadoop.com = HADOOP.COM
+  hadoop.com = HADOOP.COM
+
+Install and Start the KDC (Key Distribution Center)
+a. Download and Install KDC for Windows
+You will need to set up a Kerberos KDC on your machine. 
+Download the KDC from the MIT Kerberos page and follow the instructions for Windows setup.
+
+Start KDC and Admin Server
+Once the KDC is installed and configured, you can start the Kerberos KDC and Admin Server from the Command Prompt.
+
+Open the Command Prompt as Administrator.
+Navigate to the Kerberos installation directory (C:\Program Files\MIT\Kerberos\bin).
+Run the following command to start the KDC:
+krb5kdc -n
+
+Run this command to start the Admin Server:
+kadmind -n
+
+Add Principals to the Kerberos Database
+Now, you can add principals to your Kerberos database. You'll do this using kadmin.local (or kadmin if you have it configured for remote access).
+
+Open kadmin.local to Add Principals
+Open Command Prompt (Admin).
+
+Run:
+kadmin.local
+
+Create the admin/admin principal:
+addprinc admin/admin@HADOOP.COM
+
+Create the Kafka principal:
+addprinc -randkey kafka/my-kafka-broker@HADOOP.COM
+
+Generate the Keytab for Kafka:
+ktadd -k C:\path\to\kafka.keytab kafka/my-kafka-broker@HADOOP.COM
+
+Make sure the path (C:\path\to\kafka.keytab) points to where you want the keytab file to be created.
+
+
+Set Up Kafka with Kerberos Authentication
+Now that you have the keytab file for Kafka, you need to configure Kafka to use Kerberos authentication.
+Open the server.properties file in the Kafka configuration directory.
+
+Modify the file to enable SASL/Kerberos authentication by adding the following:
+security.inter.broker.protocol=SASL_PLAINTEXT
+sasl.mechanism.inter.broker.protocol=GSSAPI
+sasl.jaas.config=org.apache.kafka.common.security.kerberos.KerberosLoginModule required \
+    serviceName="kafka" \
+    principal="kafka/my-kafka-broker@HADOOP.COM" \
+    keyTab="C:\\path\\to\\kafka.keytab";
+
+
+Start Kafka Broker
+Now you can start the Kafka broker:
+
+Open a Command Prompt (Admin).
+Navigate to the Kafka directory where kafka-server-start.bat is located.
+
+Run the following command:
+bin\windows\kafka-server-start.bat config\server.properties
+
+
+Test Kafka with Kerberos Authentication
+After Kafka starts, you can test it using a Kafka producer or consumer that connects to the broker with Kerberos authentication.
+
+bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic test
+
